@@ -1,0 +1,47 @@
+.c-red{
+    background-color: #ea4b4b;
+    border-color: rgba(0,0,0,.32)!important;
+    border-width: 4px 0 0;
+    border-style: solid;
+    /* background-color:#f16e6e; */
+}
+.c-blue{
+    background-color: #2090e8;
+    border-color: rgba(0,0,0,.32)!important;
+    border-width: 4px 0 0;
+    border-style: solid;
+    /* background-color: #1976d2c9; */
+}
+.c-green{
+    background-color: #48a74b;
+    border-color: rgba(0,0,0,.32)!important;
+    border-width: 4px 0 0;
+    border-style: solid;
+    /* background-color: #82de86; */
+}
+.c-yellow{
+    background-color: #ecb50e;
+    border-color: rgba(0,0,0,.32)!important;
+    border-width: 4px 0 0;
+    border-style: solid;
+    /* background-color: #eac453; */
+}
+.i-dark{
+    color: rgba(0,0,0,.3)!important;
+}
+.card-title{
+    background-color: rgba(255,255,255,.05)!important;
+}
+.des{
+    text-align: justify!important;
+}
+.link{
+    cursor: pointer!important;
+}
+.expansion-panel{
+    -webkit-box-shadow:none!important;
+    box-shadow:none!important;
+}
+.ex-title{
+    margin-bottom: -12px!important;
+}

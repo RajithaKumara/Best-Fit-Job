@@ -1,0 +1,19 @@
+.card--flex-toolbar {
+    margin-top: -64px;
+}
+element.style {
+    max-width: 400px;
+    min-width: 200px;
+    margin: 10px;
+    padding: 0px;
+}
+.input-group.input-group--solo {
+    min-height: 35px;
+    max-height: 35px;
+}
+.search-bar{
+    max-width: 400px; 
+    min-width: 200px; 
+    margin:10px; 
+    padding:0px;
+}
