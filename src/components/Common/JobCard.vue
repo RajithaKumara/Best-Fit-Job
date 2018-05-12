@@ -181,7 +181,6 @@ export default {
   },
   methods: {
     web() {
-      console.log(this.url);
       window.open(this.url);
     },
     getContactType(type) {

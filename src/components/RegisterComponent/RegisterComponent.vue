@@ -17,6 +17,13 @@
           <span>Close window</span>
         </v-tooltip>
       </v-toolbar>
+      <v-progress-linear 
+        :indeterminate="true" 
+        v-show="progress" 
+        class="my-0"
+        color="cyan"
+        height="4" 
+      ></v-progress-linear>
       
       <v-card-text>
         <div class="pb-2" v-if="showSuccess">
@@ -62,7 +69,6 @@
         <v-btn :disabled="disableBtn || !valid" v-on:click="submit()" color="primary">SignUp</v-btn>
         <v-btn :disabled="disableBtn" v-on:click="cancel()" color="primary">Cancel</v-btn>
       </v-card-actions>
-      <v-progress-linear :indeterminate="true" v-show="progress" class="my-0"></v-progress-linear>
     </v-card>
   </v-dialog>
 </v-container>

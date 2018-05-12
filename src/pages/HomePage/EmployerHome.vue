@@ -152,9 +152,11 @@ import { httpError } from "../../models/errorHandler";
 export default {
   data: () => ({
     userName: "",
+    userToken: null,
     userId: null,
     userEmail: null,
     userProfile: null,
+    userRole: null,
 
     //configuration variable
     drawer: null,
@@ -180,10 +182,17 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userName = user.auth.name;
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
       this.userProfile = user.auth.profile;
+      this.userRole = user.auth.role;
+
+      if (this.userRole != "employer") {
+        this.$router.push("/NotFound");
+        return;
+      }
 
       // this.fetchJobSuggestSummary(this.userId, this.userEmail);
 
@@ -263,8 +272,21 @@ export default {
       console.log("settings");
     },
     signOut() {
-      cookie.remove("user");
-      this.$router.push("/");
+      this.$http
+        .post(rootURL + "/users/logout", {
+          userId: this.userId,
+          userEmail: this.userEmail,
+          userToken: this.userToken
+        })
+        .then(function(response) {
+          cookie.remove("user");
+          cookie.remove("token");
+          this.$router.push("/");
+        })
+        .catch(function(error) {
+          console.log("Error: ", error);
+          console.log("Error code: ", error.status);
+        });
     },
     menuItemClick(method) {
       switch (method) {

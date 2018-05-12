@@ -101,6 +101,7 @@ export default {
 
     //user identity
     userId: null,
+    userToken: null,
     userEmail: null,
 
     searchText: "",
@@ -114,6 +115,7 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
     } else {
@@ -183,6 +185,7 @@ export default {
           .post(rootURL + "/seekers/searchJobs", {
             userId: userId,
             userEmail: userEmail,
+            userToken: this.userToken,
             data: data
           })
           .then(function(response) {

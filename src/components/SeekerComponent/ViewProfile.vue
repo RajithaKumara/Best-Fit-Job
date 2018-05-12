@@ -332,6 +332,7 @@ export default {
 
     //user identity
     userId: null,
+    userToken: null,
     userEmail: null,
 
     firstName: null,
@@ -357,6 +358,7 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
       this.popBottomSheet = true;
@@ -413,7 +415,8 @@ export default {
       this.$http
         .post(rootURL + "/seekers/fetchProfile", {
           userId: userId,
-          userEmail: userEmail
+          userEmail: userEmail,
+          userToken: this.userToken
         })
         .then(function(response) {
           if (this.$route.path === this.rootLocation + "ViewProfile") {

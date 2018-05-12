@@ -249,7 +249,7 @@
         <v-flex xs12>
           <v-text-field 
             box dark 
-            label="Bulding Name" 
+            label="Building Name" 
             v-model="companyBuilding"
             readonly
           ></v-text-field>
@@ -377,6 +377,7 @@ export default {
 
     //user identity
     userId: null,
+    userToken: null,
     userEmail: null,
 
     //step 1 variables
@@ -414,6 +415,7 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
       this.popBottomSheet = true;
@@ -470,7 +472,8 @@ export default {
       this.$http
         .post(rootURL + "/employers/fetchProfile", {
           userId: userId,
-          userEmail: userEmail
+          userEmail: userEmail,
+          userToken: this.userToken
         })
         .then(function(response) {
           if (this.$route.path === this.rootLocation + "ViewProfile") {

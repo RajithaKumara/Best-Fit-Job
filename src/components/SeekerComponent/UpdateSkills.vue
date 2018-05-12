@@ -105,6 +105,7 @@ export default {
   },
   data: () => ({
     userId: null,
+    userToken: null,
     userEmail: null,
     ksao: [{ name: null, description: null }],
     oldksao: [],
@@ -122,6 +123,7 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
       this.popBottomSheet = true;
@@ -221,14 +223,13 @@ export default {
         .post(rootURL + "/seekers/fetchSkills", {
           userId: userId,
           userEmail: userEmail,
+          userToken: this.userToken,
           action: "ksao"
         })
         .then(function(response) {
           let responseData = JSON.stringify(response.body);
-          console.log(responseData);
           if (this.$route.path === this.rootLocation + "UpdateSkills") {
             this.oldksao = JSON.parse(responseData);
-            console.log(this.oldksao);
             if (this.oldksao.length != 0) {
               this.ksao = JSON.parse(responseData);
               this.bottomSheetColor = "c-green";
@@ -255,11 +256,11 @@ export default {
         .post(rootURL + "/seekers/updateProfile/ksao", {
           userId: userId,
           userEmail: userEmail,
+          userToken: this.userToken,
           action: "ksao",
           data: data
         })
         .then(function(response) {
-          console.log(response);
           //without doing this both arrays take as same
           let updatedksao = JSON.stringify(this.ksao);
           this.oldksao = JSON.parse(updatedksao);

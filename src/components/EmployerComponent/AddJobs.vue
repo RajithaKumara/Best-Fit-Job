@@ -203,6 +203,7 @@ import { httpError } from "../../models/errorHandler";
 export default {
   data: () => ({
     userId: null,
+    userToken: null,
     userEmail: null,
 
     jobTitle: null,
@@ -228,6 +229,7 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
     } else {
@@ -275,6 +277,7 @@ export default {
         .post(rootURL + "/employers/addJob", {
           userId: userId,
           userEmail: userEmail,
+          userToken: this.userToken,
           data: data
         })
         .then(function(response) {

@@ -127,6 +127,7 @@ import { httpError } from "../../models/errorHandler";
 export default {
   data: () => ({
     userId: null,
+    userToken: null,
     userEmail: null,
     ksao: [{ name: null, description: null }],
     tags: [],
@@ -143,6 +144,7 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
     } else {
@@ -212,6 +214,7 @@ export default {
           .post(rootURL + "/seekers/" + path, {
             userId: userId,
             userEmail: userEmail,
+            userToken: this.userToken,
             action: action,
             data: data
           })

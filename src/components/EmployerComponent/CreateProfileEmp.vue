@@ -287,7 +287,7 @@
             <v-flex xs12>
               <v-text-field 
                 box dark 
-                label="Bulding Name" 
+                label="Building Name" 
                 v-model="companyBuilding"
                 required
               ></v-text-field>
@@ -432,6 +432,7 @@ export default {
 
     //user identity
     userId: null,
+    userToken: null,
     userEmail: null,
 
     //step 1 variables
@@ -476,6 +477,7 @@ export default {
     if (cookie.isSet("user")) {
       //get userID and user email from cookie
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
 
@@ -558,6 +560,7 @@ export default {
         .post(rootURL + "/employers/createProfile/" + action, {
           userId: userId,
           userEmail: userEmail,
+          userToken: this.userToken,
           action: action,
           data: data
         })

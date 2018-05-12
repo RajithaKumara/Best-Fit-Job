@@ -243,11 +243,13 @@
 </template>
 
 <script>
-import { rootURL } from "../../data/data";
+import { rootURL, seekerHomeRoute, employerHomeRoute } from "../../data/data";
 import { httpError } from "../../models/errorHandler";
+import { cookie } from "../../models/cookie";
 
 export default {
   data: () => ({
+    userRole: null,
     loading: false,
     showDialog: false,
     showBottomSheet: false,
@@ -271,15 +273,34 @@ export default {
       { title: "Sign up", icon: "account_circle", method: "register" }
     ],
 
-    // lorem: `Lorem ipsum dolor sit amet, mel at clita quando. Te sit oratio vituperatoribus, nam ad ipsum posidonium mediocritatem, explicari dissentiunt cu mea. Repudiare disputationi vim in, mollis iriure nec cu, alienum argumentum ius ad. Pri eu justo aeque torquatos.`
     dummyText: `This project makes a platform for job seekers to find jobs and employers to offer jobs easily. In order to fulfil this task, this system has portals for job seekers and people who offer jobs. Job seekers are able to add their knowledge, skills, attitudes and other extra attributes to their account. On the other hand, employers can add their job opportunities with expected skills. The output of this system is matching job opportunities with job seekers profiles and sending notifications to both parties.`
   }),
+  created: function() {
+    if (cookie.isSet("user")) {
+      let user = cookie.get("user");
+      this.userRole = user.auth.role;
+      this.menuItems = [
+        { title: "Features", icon: "featured_play_list", method: "features" },
+        { title: "Marketplace", icon: "card_travel", method: "marketPlace" },
+        { title: "Home", icon: "home", method: "goHome" }
+      ];
+    }
+  },
   methods: {
     login: function() {
       this.$router.push("/Login");
     },
     register: function() {
       this.$router.push("/Register");
+    },
+    goHome: function() {
+      if (this.userRole == "seeker") {
+        this.$router.push(seekerHomeRoute); //move to job seeker home page
+      } else if (this.userRole == "employer") {
+        this.$router.push(employerHomeRoute); // move to empolyer home page
+      } else {
+        console.log("Unauthorized user.");
+      }
     },
     marketPlace: function() {
       console.log("marketPlace");
@@ -297,6 +318,9 @@ export default {
           break;
         case "marketPlace":
           this.marketPlace();
+          break;
+        case "goHome":
+          this.goHome();
           break;
         default:
           console.log(method);
@@ -375,9 +399,6 @@ export default {
                   }
                 }
               });
-
-              console.log(this.jobs);
-
               this.loading = false;
               this.bottomSheetColor = "c-green";
               this.bottomSheetText = "Search completed successfully...";

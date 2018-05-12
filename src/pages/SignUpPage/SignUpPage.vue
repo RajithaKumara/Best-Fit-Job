@@ -200,9 +200,20 @@ export default {
           cookie.remove("authUser"); //remove temporary user cookie
 
           let user = response.body;
+          let auth = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+          };
+          if (user.profile === undefined) {
+            auth["profile"] = 0;
+          } else {
+            auth["profile"] = user.profile;
+          }
 
-          let userCookie = { auth: user };
-          cookie.set("user", userCookie);
+          cookie.set("user", { auth });
+          cookie.set("token", user.token);
 
           if (cookie.isSet("user")) {
             //2 step check is cookie stored

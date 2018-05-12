@@ -590,6 +590,7 @@ export default {
 
     //user identity
     userId: null,
+    userToken: null,
     userEmail: null,
 
     //step 1 variables
@@ -643,6 +644,7 @@ export default {
   created: function() {
     if (cookie.isSet("user")) {
       let user = cookie.get("user");
+      this.userToken = cookie.get("token");
       this.userId = user.auth.id;
       this.userEmail = user.auth.email;
       this.popBottomSheet = true;
@@ -686,12 +688,10 @@ export default {
         currentPosition: this.currentPosition,
         summary: this.summary
       };
-      console.log(general);
       this.sendRequest(1, "general", this.userId, this.userEmail, general);
     },
     continueStep2() {
       this.loading2 = true;
-      console.log(this.contacts);
       this.sendRequest(
         2,
         "contacts",
@@ -702,7 +702,6 @@ export default {
     },
     continueStep3() {
       this.loading3 = true;
-      console.log(this.experiences);
       this.sendRequest(
         3,
         "experience",
@@ -713,7 +712,6 @@ export default {
     },
     continueStep4() {
       this.loading4 = true;
-      console.log(this.education);
       this.sendRequest(
         4,
         "education",
@@ -724,17 +722,14 @@ export default {
     },
     continueStep5() {
       this.loading5 = true;
-      console.log(this.ksao);
       this.sendRequest(5, "ksao", this.userId, this.userEmail, this.ksao);
     },
     continueStep6() {
       this.loading6 = true;
-      console.log(this.extra);
       this.sendRequest(6, "extra", this.userId, this.userEmail, this.extra);
     },
     continueStep7() {
       this.loading7 = true;
-      console.log(this.tags);
       this.sendRequest(7, "tags", this.userId, this.userEmail, this.tags);
     },
 
@@ -804,6 +799,7 @@ export default {
         .post(rootURL + "/seekers/updateProfile/" + action, {
           userId: userId,
           userEmail: userEmail,
+          userToken: this.userToken,
           action: action,
           data: data
         })
@@ -849,7 +845,8 @@ export default {
       this.$http
         .post(rootURL + "/seekers/fetchProfile", {
           userId: userId,
-          userEmail: userEmail
+          userEmail: userEmail,
+          userToken: this.userToken
         })
         .then(function(response) {
           if (this.$route.path === this.rootLocation + "EditProfile") {

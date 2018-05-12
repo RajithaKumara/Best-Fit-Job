@@ -17,6 +17,13 @@
           <span>Close window</span>
         </v-tooltip>
       </v-toolbar>
+      <v-progress-linear 
+        :indeterminate="true" 
+        v-show="progress" 
+        class="my-0"
+        color="cyan"
+        height="4" 
+      ></v-progress-linear>
       
       <v-card-text>
         <div class="pb-2" v-if="showSuccess">
@@ -63,7 +70,6 @@
         <v-btn :disabled="disableBtn || !valid" v-on:click="submit()" color="primary">Login</v-btn>
         <v-btn :disabled="disableBtn" v-on:click="cancel()" color="primary">Cancel</v-btn>
       </v-card-actions>
-      <v-progress-linear :indeterminate="true" v-show="progress" class="my-0"></v-progress-linear>
     </v-card>
   </v-dialog>
 </v-container>
@@ -141,18 +147,20 @@ export default {
           this.progress = false;
 
           let user = response.body;
+          let auth = {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            role: user.role
+          };
           if (user.profile === undefined) {
-            user = {
-              id: user.id,
-              name: user.name,
-              email: user.email,
-              role: user.role,
-              profile: 0
-            };
+            auth["profile"] = 0;
+          } else {
+            auth["profile"] = user.profile;
           }
 
-          let userCookie = { auth: user };
-          cookie.set("user", userCookie);
+          cookie.set("user", { auth });
+          cookie.set("token", user.token);
 
           if (cookie.isSet("user")) {
             //2 step check is cookie stored
@@ -200,4 +208,3 @@ export default {
   overflow-x: hidden;
 }
 </style>
-

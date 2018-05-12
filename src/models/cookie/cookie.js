@@ -6,7 +6,11 @@ exports.set = function (name, value) {
 
 exports.get = function (name) {
   let cookie = Cookies.get(name);
-  return JSON.parse(cookie);
+  try{
+    return JSON.parse(cookie);
+  }catch(error){
+    return cookie;
+  }
 }
 
 exports.remove = function (name) {
